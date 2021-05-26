@@ -33,7 +33,7 @@ pipeline {
         stage('Build docker image') {
             steps{
                 dir('lesson-1') {
-                    sh 'docker build -t bakavets/jenkins-images:0.3 .'
+                    sh 'docker build -t bakavets/jenkins-images:0.4 .'
                 }
             }
         }
@@ -41,14 +41,14 @@ pipeline {
             steps{
                 withDockerRegistry(credentialsId: 'dockerhub-cred-bakavets', url: 'https://index.docker.io/v1/') {
                     sh '''
-                        docker push bakavets/jenkins-images:0.3
+                        docker push bakavets/jenkins-images:0.4
                     '''
                 }
             }
         }
         stage('Delete docker image locally') {
             steps{
-                sh 'docker rmi bakavets/jenkins-images:0.3'
+                sh 'docker rmi bakavets/jenkins-images:0.4'
             }
         }
     }

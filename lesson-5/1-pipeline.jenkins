@@ -1,0 +1,44 @@
+pipeline {
+    agent { label 'ubuntu' }
+
+    parameters {
+        gitParameter (  branch: '', 
+                        branchFilter: 'origin/(.*)', 
+                        defaultValue: 'main', 
+                        description: '', 
+                        name: 'BRANCH', 
+                        quickFilterEnabled: true, 
+                        selectedValue: 'TOP', 
+                        sortMode: 'DESCENDING', 
+                        tagFilter: '*', 
+                        type: 'PT_BRANCH', 
+                        useRepository: 'git@github.com:bakavets/web-app.git')
+    }
+
+    stages {
+        stage('Delete workspace before build starts') {
+            steps {
+                echo 'Deleting workspace'
+                deleteDir()
+            }
+        }
+        stage('Env print') {
+            steps {
+                sh '''
+                    echo $BRANCH
+                '''
+            }
+        }
+        stage('Checkout') {
+            steps{
+                    git branch: "${params.BRANCH}", credentialsId: 'github-bakavets-web-app-cred', url: 'git@github.com:bakavets/web-app.git'      
+                }
+        }
+        stage('Ls work dir') {
+            steps {
+                sh "ls -la"
+            }
+        }
+
+    }
+}

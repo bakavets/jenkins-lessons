@@ -1,0 +1,35 @@
+pipeline {
+
+  agent { label 'mix-slave' }
+  
+  stages {
+    stage('Run python') {
+      steps {
+        container('python') {
+          sh '''
+            python3 --version
+            sleep 50
+          '''
+        }
+        sh '''
+            python --version
+            sleep 50
+        '''
+      }
+    }
+    stage('Run java') {
+      steps {
+        container('java') {
+            sh '''
+                java --version
+                sleep 50
+            '''
+        }
+        sh '''
+            java --version
+            sleep 50
+        '''
+      }
+    }
+  }
+}
